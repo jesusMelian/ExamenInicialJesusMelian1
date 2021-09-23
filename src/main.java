@@ -6,11 +6,13 @@ public class main {
         ejecutar();
     }
 
+    //EJECUTA LA APLICACIOn
     public static  void ejecutar(){
         crearArchivoDeNotas();
         aniadirNotasAAlumno(obtenerPersonasAleatorias());
     }
 
+    //CREA EL ARCHIVO DE SALIDA DE ALUMNOS Y NOTAS
     public static void crearArchivoDeNotas(){
         File file2 = new File("listadodenombresynotas.csv");
         if (file2.exists()){
