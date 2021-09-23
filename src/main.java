@@ -3,10 +3,10 @@ import java.util.ArrayList;
 
 public class main {
     public static void main(String[] args) {
-
+        obtenerPersonas();
     }
 
-    private ArrayList<persona> obtenerPersonas(){
+    private static ArrayList<persona> obtenerPersonas(){
         ArrayList<persona> arrPersonas=new ArrayList<>();
         String nombre;
         File file = new File("listadodenombresaleatorios.csv");
@@ -20,6 +20,7 @@ public class main {
                 persona person=new persona(nombre);
                 //añado la persona al arrayList de personas
                 arrPersonas.add(person);
+                System.out.println(String.valueOf(person.nombre));
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -27,7 +28,19 @@ public class main {
             e.printStackTrace();
         }
 
+        return arrPersonas;
     }
+
+    private static int contarPersonas(ArrayList<persona> arrPersona){
+        return arrPersona.size();
+    }
+
+    private static double obtenerNumAleatorio(int minValue, int maxValue){
+        double randomNum = Math.random() * ( maxValue - minValue);
+        System.out.println("Random Number: "+randomNum);
+        return  randomNum;
+    }
+    public static ArrayList<String> obtenerPersonasAleatorias
 }
 
 
