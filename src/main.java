@@ -3,21 +3,39 @@ import java.util.ArrayList;
 
 public class main {
     public static void main(String[] args) {
-        //obtenerPersonas();
-        //System.out.println(contarPersonas(obtenerPersonas()));
-        //System.out.println(obtenerNumAleatorio(0, contarPersonas(obtenerPersonas())));
-        System.out.println("TAMAÑO: " +obtenerPersonasAleatorias().size());
-        for (int i = 0; i < 10; i++) {
-            System.out.println(obtenerPersonasAleatorias()[i]);
-        }
-
+        ejecutar();
     }
 
+    public static  void ejecutar(){
+        crearArchivoDeNotas();
+        aniadirNotasAAlumno(obtenerPersonasAleatorias());
+    }
+
+    public static void crearArchivoDeNotas(){
+        File file2 = new File("listadodenombresynotas.csv");
+        if (file2.exists()){
+            if(file2.delete()){
+                System.out.println("SE HA BORRADO EL ARCHIVO");
+            }else{
+                System.out.println("NO SE HA BORRADO EL ARCHIVO");
+            }
+            try {
+                file2.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else{
+            try {
+                file2.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
     private static ArrayList<persona> obtenerPersonas(){
         ArrayList<persona> arrPersonas=new ArrayList<>();
         String nombre;
         File file = new File("listadodenombresaleatorios.csv");
-        //System.out.println("es: " +file.getAbsolutePath());
         try {
             BufferedReader bfR=new BufferedReader(new FileReader(file));
             //Para saltarme la primera linea que es la cabecera
@@ -28,7 +46,6 @@ public class main {
                 persona person=new persona(nombre);
                 //añado la persona al arrayList de personas
                 arrPersonas.add(person);
-                //System.out.println(String.valueOf(person.nombre));
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -45,41 +62,62 @@ public class main {
 
     private static double obtenerNumAleatorio(int minValue, int maxValue){
         double randomNum = Math.random() * (maxValue - minValue);
-        System.out.println("Random Number: "+randomNum);
         return  randomNum;
     }
 
     public static String[] obtenerPersonasAleatorias(){
         double numAleatorio=0;
-        String[] arr10Personas=new String[];
+        String[] arr10Personas=new String[10];
 
         for (int i = 0; i < 10; i++) {
             //obtengo un número aleatorio dentro del rango.
             numAleatorio=obtenerNumAleatorio(0, contarPersonas(obtenerPersonas()));
+            numAleatorio=Math.round(numAleatorio*100.0)/100.0;
 
-            System.out.println(i+"- "+ obtenerPersonas().get((int) numAleatorio).nombre);
             arr10Personas[i]=obtenerPersonas().get((int) numAleatorio).nombre;
         }
         return  arr10Personas;
     }
 
     public static void aniadirNotasAAlumno(String[] arrPersona){
-        double [] notas= new double[4];
+        Double [] notas= new Double[4];
         String sNotas="";
-        ArrayList<String> linea=new ArrayList<>();
+        String linea="NOMBRE, NOTA1,NOTA2,NOTA3,NOTA4, MEDIA \n";
         double numAleatorio=0;
         for (int e = 0; e < 10; e++) {
-
-
             for (int i = 0; i < notas.length; i++) {
                 numAleatorio = obtenerNumAleatorio(0, 10);
-                sNotas = sNotas + numAleatorio + ",";
+                //Para ponerle 2 decimales
+                numAleatorio=Math.round(numAleatorio*100.0)/100.0;
+                sNotas = sNotas + numAleatorio + ", ";
                 notas[i]=numAleatorio;
             }
-            linea.add(obtenerPersonasAleatorias()[e] + sNotas +)
+            //Escribimos la linea en el archivo
+            escribirEnArchivo(linea);
+            //ponemos la linea en blanco
+            linea="";
+            //ponemos el contenido de la linea
+            linea=obtenerPersonasAleatorias()[e]+", " + sNotas + calcularMedia(notas)+"\n";
+
+            //Reiniciamos el contenido de sNotas
+            sNotas="";
         }
     }
 
+    //Escribe en el archivo los nombres y las notas
+    public static void escribirEnArchivo(String linea){
+        File file = new File("listadodenombresynotas.csv");
+        try {
+            BufferedWriter bfW=new BufferedWriter(new FileWriter(file, true));
+            //Escribo la linea
+            bfW.write(linea);
+            bfW.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //Calcula la media
     public static double calcularMedia(Double[] notas){
         double media=0;
         for (int i = 0; i < notas.length; i++) {
