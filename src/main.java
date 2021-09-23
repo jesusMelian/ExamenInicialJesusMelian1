@@ -8,7 +8,7 @@ public class main {
         //System.out.println(obtenerNumAleatorio(0, contarPersonas(obtenerPersonas())));
         System.out.println("TAMAÑO: " +obtenerPersonasAleatorias().size());
         for (int i = 0; i < 10; i++) {
-            System.out.println(obtenerPersonasAleatorias().get(i));
+            System.out.println(obtenerPersonasAleatorias()[i]);
         }
 
     }
@@ -49,21 +49,45 @@ public class main {
         return  randomNum;
     }
 
-    public static ArrayList<String> obtenerPersonasAleatorias(){
+    public static String[] obtenerPersonasAleatorias(){
         double numAleatorio=0;
-        ArrayList<String> arr10Personas=new ArrayList<>();
+        String[] arr10Personas=new String[];
 
         for (int i = 0; i < 10; i++) {
             //obtengo un número aleatorio dentro del rango.
             numAleatorio=obtenerNumAleatorio(0, contarPersonas(obtenerPersonas()));
 
             System.out.println(i+"- "+ obtenerPersonas().get((int) numAleatorio).nombre);
-            arr10Personas.add(obtenerPersonas().get((int) numAleatorio).nombre);
+            arr10Personas[i]=obtenerPersonas().get((int) numAleatorio).nombre;
         }
         return  arr10Personas;
     }
 
-    public static aniadirNotasAAlumno
+    public static void aniadirNotasAAlumno(String[] arrPersona){
+        double [] notas= new double[4];
+        String sNotas="";
+        ArrayList<String> linea=new ArrayList<>();
+        double numAleatorio=0;
+        for (int e = 0; e < 10; e++) {
+
+
+            for (int i = 0; i < notas.length; i++) {
+                numAleatorio = obtenerNumAleatorio(0, 10);
+                sNotas = sNotas + numAleatorio + ",";
+                notas[i]=numAleatorio;
+            }
+            linea.add(obtenerPersonasAleatorias()[e] + sNotas +)
+        }
+    }
+
+    public static double calcularMedia(Double[] notas){
+        double media=0;
+        for (int i = 0; i < notas.length; i++) {
+            media=notas[i]+media;
+        }
+        media=media/notas.length;
+        return media;
+    }
 }
 
 
