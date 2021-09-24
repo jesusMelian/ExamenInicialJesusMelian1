@@ -9,7 +9,7 @@ public class main {
     //EJECUTA LA APLICACIOn
     public static  void ejecutar(){
         crearArchivoDeNotas();
-        aniadirNotasAAlumno(obtenerPersonasAleatorias());
+        aniadirNotasAAlumno(obtenerPersonasAleatorias(10), 4, 10);
     }
 
     //CREA EL ARCHIVO DE SALIDA DE ALUMNOS Y NOTAS
@@ -34,6 +34,8 @@ public class main {
             }
         }
     }
+
+    //ME DEVUELVE UN ARRAYLIST CON LAS PERSONAS QUE CONTIENE EL CSV
     private static ArrayList<persona> obtenerPersonas(){
         ArrayList<persona> arrPersonas=new ArrayList<>();
         String nombre;
@@ -58,20 +60,23 @@ public class main {
         return arrPersonas;
     }
 
+    //ME DA EL NÚMERO DE PERSONAS QUE CONTIENE EL ARRAYLIST
     private static int contarPersonas(ArrayList<persona> arrPersona){
         return arrPersona.size();
     }
 
+    //ME DEVUELVE UN NÚMERO ALEATORIO ENTRE UN RANGO DE NÚMEROS
     private static double obtenerNumAleatorio(int minValue, int maxValue){
         double randomNum = Math.random() * (maxValue - minValue);
         return  randomNum;
     }
 
-    public static String[] obtenerPersonasAleatorias(){
+    //OBTENGO UN ARRAY DE STRING CON DIEZ PERSONAS ELEJIDAS ALEATORIAMENTE
+    public static String[] obtenerPersonasAleatorias(int numPersonas){
         double numAleatorio=0;
-        String[] arr10Personas=new String[10];
+        String[] arr10Personas=new String[numPersonas];
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < arr10Personas.length; i++) {
             //obtengo un número aleatorio dentro del rango.
             numAleatorio=obtenerNumAleatorio(0, contarPersonas(obtenerPersonas()));
             numAleatorio=Math.round(numAleatorio*100.0)/100.0;
@@ -81,14 +86,15 @@ public class main {
         return  arr10Personas;
     }
 
-    public static void aniadirNotasAAlumno(String[] arrPersona){
-        Double [] notas= new Double[4];
+    //ANIADIMOS LAS 4 NOTAS ALEATORIAMENTE Y OBTENEMOS LA MEDIA DE ESAS 4 NOTAS.
+    public static void aniadirNotasAAlumno(String[] arrPersona, int numNotas, int numPersonas){
+        Double [] notas= new Double[numNotas];
         String sNotas="";
         String linea="NOMBRE, NOTA1,NOTA2,NOTA3,NOTA4, MEDIA \n";
         double numAleatorio=0;
-        for (int e = 0; e < 10; e++) {
+        for (int e = 0; e < numPersonas; e++) {
             for (int i = 0; i < notas.length; i++) {
-                numAleatorio = obtenerNumAleatorio(0, 10);
+                numAleatorio = obtenerNumAleatorio(0, numPersonas);
                 //Para ponerle 2 decimales
                 numAleatorio=Math.round(numAleatorio*100.0)/100.0;
                 sNotas = sNotas + numAleatorio + ", ";
@@ -99,7 +105,7 @@ public class main {
             //ponemos la linea en blanco
             linea="";
             //ponemos el contenido de la linea
-            linea=obtenerPersonasAleatorias()[e]+", " + sNotas + calcularMedia(notas)+"\n";
+            linea=obtenerPersonasAleatorias(numPersonas)[e]+", " + sNotas + calcularMedia(notas)+"\n";
 
             //Reiniciamos el contenido de sNotas
             sNotas="";
@@ -112,6 +118,7 @@ public class main {
         try {
             BufferedWriter bfW=new BufferedWriter(new FileWriter(file, true));
             //Escribo la linea
+            System.out.println(linea);
             bfW.write(linea);
             bfW.flush();
         } catch (IOException e) {
